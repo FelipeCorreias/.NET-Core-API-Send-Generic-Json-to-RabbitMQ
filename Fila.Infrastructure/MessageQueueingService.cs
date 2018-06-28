@@ -1,5 +1,7 @@
 ﻿using Fila.Application.Interfaces;
+using Fila.Application.Settings;
 using Fila.Common.Serializations;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -9,16 +11,21 @@ namespace Fila.Infrastructure
 {
   public class MessageQueueingService : IMessageQueueingService
     {
-        public string Host { get; set; }
         public string Queue { get; set; }
         private IConnection connection;
         private IModel channel;
+        private readonly IOptions<MessageQueueingSettings> _messageQueueingSettings;
+
+        public MessageQueueingService(IOptions<MessageQueueingSettings> messageQueueingSettings)
+        {
+            _messageQueueingSettings = messageQueueingSettings;
+        }
 
         public void Connect()
         {
             ConnectionFactory factory = new ConnectionFactory
             {
-                HostName = Host
+                HostName = _messageQueueingSettings.Value.HostName
             };
 
             connection = factory.CreateConnection();

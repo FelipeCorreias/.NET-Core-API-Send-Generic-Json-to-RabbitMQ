@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Fila.Application.Interfaces
 {
-   public interface IMessageQueueingService
+   public interface IMessageQueueingService 
     {
-        string Host { get; set; }
         string Queue { get; set; }
 
         void Connect();

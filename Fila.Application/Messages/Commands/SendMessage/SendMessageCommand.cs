@@ -28,7 +28,6 @@ namespace Fila.Application.Messages.Commands.SendMessage
             };
 
             _messsageQueuingService.Queue = message.Queue;
-            _messsageQueuingService.Host = "localhost";
             _messsageQueuingService.Connect();
             _messsageQueuingService.SendMessage(_serializationService.ToByteArray(message.BodyMessage));
             _messsageQueuingService.Disconnect();
