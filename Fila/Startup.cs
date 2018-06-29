@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Fila
 {
@@ -30,6 +31,11 @@ namespace Fila
             //AppSettings
             services.Configure<MessageQueueingSettings>(Configuration.GetSection("MessageQueueingSettings"));
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",null);             
+            });
+
             DIContainer.RegisterDependencies(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -41,6 +47,14 @@ namespace Fila
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "V1");
+            });
+
 
             app.UseMvc();
         }
